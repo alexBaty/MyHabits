@@ -11,12 +11,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    func createHabitsViewController() -> UINavigationController {
+        let habitsViewController = UINavigationController(rootViewController: HabitsViewController())
+        habitsViewController.tabBarItem = UITabBarItem(title: "Habits", image: UIImage(systemName: "rectangle.grid.1x2.fill"), tag: 0)
+        return habitsViewController
+    }
+
+    func createInfoViewController() -> UINavigationController {
+        let infoViewController = UINavigationController(rootViewController: InfoViewController())
+        infoViewController.tabBarItem = UITabBarItem(title: "Info", image: UIImage(systemName: "info.circle.fill"), tag: 1)
+        return infoViewController
+    }
+
+    func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        tabBar.viewControllers = [createHabitsViewController(), createInfoViewController()]
+        tabBar.tabBar.backgroundColor = .systemGray6
+        tabBar.tabBar.tintColor = UIColor(red: 161/255, green: 22/255, blue: 204/255, alpha: 1)
+        return tabBar
+    }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = createTabBar()
+        self.window = window
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
